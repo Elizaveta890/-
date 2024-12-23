@@ -1,0 +1,489 @@
+USE [master]
+GO
+/****** Object:  Database [dry_cleaning]    Script Date: 23.12.2024 4:53:05 ******/
+CREATE DATABASE [dry_cleaning]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'dry_cleaning', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER01\MSSQL\DATA\dry_cleaning.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'dry_cleaning_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER01\MSSQL\DATA\dry_cleaning_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [dry_cleaning] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [dry_cleaning].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [dry_cleaning] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [dry_cleaning] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [dry_cleaning] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [dry_cleaning] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [dry_cleaning] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET RECOVERY FULL 
+GO
+ALTER DATABASE [dry_cleaning] SET  MULTI_USER 
+GO
+ALTER DATABASE [dry_cleaning] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [dry_cleaning] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [dry_cleaning] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [dry_cleaning] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [dry_cleaning] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [dry_cleaning] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'dry_cleaning', N'ON'
+GO
+ALTER DATABASE [dry_cleaning] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [dry_cleaning] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [dry_cleaning]
+GO
+/****** Object:  Table [dbo].[Category]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Category](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Clients]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Clients](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[surname] [nvarchar](50) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+	[patronymic] [nvarchar](50) NULL,
+	[phone] [nvarchar](11) NOT NULL,
+	[address] [nvarchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Complexity]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Complexity](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+	[allowance] [decimal](8, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employee]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employee](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[surname] [nvarchar](50) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+	[patronymic] [nvarchar](50) NULL,
+	[phone] [nvarchar](11) NOT NULL,
+	[address] [nvarchar](100) NOT NULL,
+	[passport_data] [nvarchar](12) NOT NULL,
+	[role_id] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Order]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Order](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[client_id] [int] NOT NULL,
+	[employee_id] [int] NOT NULL,
+	[status_id] [int] NOT NULL,
+	[urgency_id] [int] NOT NULL,
+	[complexity_id] [int] NOT NULL,
+	[type_of_treatment_id] [int] NOT NULL,
+	[date_create] [datetime] NOT NULL,
+	[date_return] [date] NOT NULL,
+	[amount] [money] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Product]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Product](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[category_id] [int] NOT NULL,
+	[order_id] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Role](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+	[salary] [money] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Status]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Status](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Type_of_treatment]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Type_of_treatment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+	[price] [money] NOT NULL,
+ CONSTRAINT [PK__Type_of___3213E83FB1312680] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Urgency]    Script Date: 23.12.2024 4:53:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Urgency](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nvarchar](50) NOT NULL,
+	[allowance] [decimal](8, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Category] ON 
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (1, N'Одежда')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (2, N'Обувь')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (3, N'Постельное белье')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (4, N'Шторы')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (5, N'Куртки')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (6, N'Сумки')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (7, N'Футболки')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (8, N'Платья')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (9, N'Пиджаки')
+GO
+INSERT [dbo].[Category] ([id], [name]) VALUES (10, N'Рубашки')
+GO
+SET IDENTITY_INSERT [dbo].[Category] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Clients] ON 
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (1, N'Иванов', N'Иван', N'Иванович', N'89675490333', N'Улица Пушкина, д. 1')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (2, N'Петров', N'Петр', N'Петрович', N'89129090909', N'Улица Лермонтова, д. 2')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (3, N'Сидоров', N'Сидор', N'Сидорович', N'89676767689', N'Улица Гоголя, д. 3')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (4, N'Алексеев', N'Алексей', N'Алексеевич', N'89101019089', N'Улица Тургенева, д. 4')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (5, N'Федоров', N'Федор', N'Федорович', N'89234516790', N'Улица Толстого, д. 5')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (6, N'Семенов', N'Семен', N'Семенович', N'89078676895', N'Улица Чехова, д. 6')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (7, N'Родионов', N'Родион', N'Родионович', N'89444546473', N'Улица Достоевского, д. 7')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (8, N'Мартынов', N'Мартын', N'Мартынович', N'89345647454', N'Улица Цветкова, д. 8')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (9, N'Смирнов', N'Смирн', N'Смирновна', N'89121254638', N'Улица Суворова, д. 9')
+GO
+INSERT [dbo].[Clients] ([id], [surname], [name], [patronymic], [phone], [address]) VALUES (10, N'Захаров', N'Захар', N'Захарович', N'89073459821', N'Улица Маяковского, д. 10')
+GO
+SET IDENTITY_INSERT [dbo].[Clients] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Complexity] ON 
+GO
+INSERT [dbo].[Complexity] ([id], [name], [allowance]) VALUES (1, N'Легкая', CAST(0.00 AS Decimal(8, 2)))
+GO
+INSERT [dbo].[Complexity] ([id], [name], [allowance]) VALUES (2, N'Средняя', CAST(300.00 AS Decimal(8, 2)))
+GO
+INSERT [dbo].[Complexity] ([id], [name], [allowance]) VALUES (3, N'Сложная', CAST(600.00 AS Decimal(8, 2)))
+GO
+INSERT [dbo].[Complexity] ([id], [name], [allowance]) VALUES (4, N'Индивидуальная', CAST(900.00 AS Decimal(8, 2)))
+GO
+SET IDENTITY_INSERT [dbo].[Complexity] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Employee] ON 
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (1, N'Сидоров', N'Сидор', N'Сидорович', N'89123456789', N'Улица Чехова, д. 3', N'90 21 345687', 1)
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (2, N'Николаев', N'Николай', N'Николаевич', N'89012345678', N'Улица Достоевского, д. 4', N'23 34 561234', 2)
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (3, N'Григорьев', N'Григорий', N'Григорьевич', N'89234567890', N'Улица Есенина, д. 5', N'90 23 451000', 3)
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (4, N'Павлов', N'Павел', N'Павлович', N'89678954632', N'Улица Крылова, д. 6', N'92 20 121212', 4)
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (5, N'Ковалева', N'Анна', N'Ковалиевич', N'89000001200', N'Улица Михайлова, д. 7', N'92 20 212121', 5)
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (6, N'Борисов', N'Борис', N'Борисович', N'89189208745', N'Улица Лермонтова, д. 8', N'92 20 313131', 1)
+GO
+INSERT [dbo].[Employee] ([id], [surname], [name], [patronymic], [phone], [address], [passport_data], [role_id]) VALUES (7, N'Тимофеев', N'Тимофей', N'Тимофеевич', N'89987654321', N'Улица Пушкина, д. 9', N'92 20 171717', 2)
+GO
+SET IDENTITY_INSERT [dbo].[Employee] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Order] ON 
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (1, 1, 1, 1, 1, 1, 1, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-26' AS Date), 200.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (2, 2, 2, 2, 2, 2, 2, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-28' AS Date), 400.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (3, 3, 3, 1, 1, 2, 3, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-27' AS Date), 350.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (4, 4, 4, 3, 2, 1, 4, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-29' AS Date), 450.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (5, 5, 5, 2, 1, 3, 5, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-27' AS Date), 600.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (6, 6, 6, 1, 3, 1, 6, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-25' AS Date), 300.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (7, 7, 1, 3, 2, 2, 1, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-30' AS Date), 200.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (8, 8, 2, 1, 1, 3, 2, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-28' AS Date), 400.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (9, 9, 3, 3, 3, 3, 3, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-27' AS Date), 350.0000)
+GO
+INSERT [dbo].[Order] ([id], [client_id], [employee_id], [status_id], [urgency_id], [complexity_id], [type_of_treatment_id], [date_create], [date_return], [amount]) VALUES (10, 10, 4, 2, 2, 2, 4, CAST(N'2024-12-23T04:19:46.003' AS DateTime), CAST(N'2024-12-29' AS Date), 450.0000)
+GO
+SET IDENTITY_INSERT [dbo].[Order] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Product] ON 
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (1, 1, 1)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (2, 2, 2)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (3, 3, 3)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (4, 4, 4)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (5, 5, 5)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (6, 6, 6)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (7, 7, 7)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (8, 8, 8)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (9, 9, 9)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (10, 10, 10)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (11, 1, 1)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (12, 2, 2)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (13, 3, 3)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (14, 4, 4)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (15, 5, 5)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (16, 6, 6)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (17, 7, 7)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (18, 8, 8)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (19, 9, 9)
+GO
+INSERT [dbo].[Product] ([id], [category_id], [order_id]) VALUES (20, 10, 10)
+GO
+SET IDENTITY_INSERT [dbo].[Product] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Role] ON 
+GO
+INSERT [dbo].[Role] ([id], [name], [salary]) VALUES (1, N'Мойщик', 25000.0000)
+GO
+INSERT [dbo].[Role] ([id], [name], [salary]) VALUES (2, N'Мастер', 30000.0000)
+GO
+INSERT [dbo].[Role] ([id], [name], [salary]) VALUES (3, N'Менеджер', 35000.0000)
+GO
+INSERT [dbo].[Role] ([id], [name], [salary]) VALUES (4, N'Директор', 50000.0000)
+GO
+INSERT [dbo].[Role] ([id], [name], [salary]) VALUES (5, N'Помощник', 20000.0000)
+GO
+SET IDENTITY_INSERT [dbo].[Role] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Status] ON 
+GO
+INSERT [dbo].[Status] ([id], [name]) VALUES (1, N'В ожидании')
+GO
+INSERT [dbo].[Status] ([id], [name]) VALUES (2, N'В процессе')
+GO
+INSERT [dbo].[Status] ([id], [name]) VALUES (3, N'Завершён')
+GO
+INSERT [dbo].[Status] ([id], [name]) VALUES (4, N'Отменён')
+GO
+SET IDENTITY_INSERT [dbo].[Status] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Type_of_treatment] ON 
+GO
+INSERT [dbo].[Type_of_treatment] ([id], [name], [price]) VALUES (1, N'Стирка', 200.0000)
+GO
+INSERT [dbo].[Type_of_treatment] ([id], [name], [price]) VALUES (2, N'Химчистка', 400.0000)
+GO
+INSERT [dbo].[Type_of_treatment] ([id], [name], [price]) VALUES (3, N'Биочистка', 350.0000)
+GO
+INSERT [dbo].[Type_of_treatment] ([id], [name], [price]) VALUES (4, N'Дезинфекция', 450.0000)
+GO
+INSERT [dbo].[Type_of_treatment] ([id], [name], [price]) VALUES (5, N'Стирка+Химчистка', 600.0000)
+GO
+INSERT [dbo].[Type_of_treatment] ([id], [name], [price]) VALUES (6, N'Устранение пятен', 300.0000)
+GO
+SET IDENTITY_INSERT [dbo].[Type_of_treatment] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Urgency] ON 
+GO
+INSERT [dbo].[Urgency] ([id], [name], [allowance]) VALUES (1, N'Обычная', CAST(0.00 AS Decimal(8, 2)))
+GO
+INSERT [dbo].[Urgency] ([id], [name], [allowance]) VALUES (2, N'Срочная', CAST(500.00 AS Decimal(8, 2)))
+GO
+INSERT [dbo].[Urgency] ([id], [name], [allowance]) VALUES (3, N'Экстренная', CAST(1000.00 AS Decimal(8, 2)))
+GO
+SET IDENTITY_INSERT [dbo].[Urgency] OFF
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD FOREIGN KEY([role_id])
+REFERENCES [dbo].[Role] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([client_id])
+REFERENCES [dbo].[Clients] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([complexity_id])
+REFERENCES [dbo].[Complexity] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([employee_id])
+REFERENCES [dbo].[Employee] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([status_id])
+REFERENCES [dbo].[Status] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK__Order__type_of_t__4CA06362] FOREIGN KEY([type_of_treatment_id])
+REFERENCES [dbo].[Type_of_treatment] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK__Order__type_of_t__4CA06362]
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([urgency_id])
+REFERENCES [dbo].[Urgency] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Product]  WITH CHECK ADD FOREIGN KEY([category_id])
+REFERENCES [dbo].[Category] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Product]  WITH CHECK ADD FOREIGN KEY([order_id])
+REFERENCES [dbo].[Order] ([id])
+ON DELETE CASCADE
+GO
+USE [master]
+GO
+ALTER DATABASE [dry_cleaning] SET  READ_WRITE 
+GO
